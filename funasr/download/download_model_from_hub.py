@@ -41,7 +41,7 @@ def download_from_ms(**kwargs):
                 check_latest=kwargs.get("check_latest", True),
             )
         except Exception as e:
-            print(f"Download: {model_or_path} failed!: {e}")
+            logging.error(f"Download: {model_or_path} failed!: {e}", exc_info=True)
 
     kwargs["model_path"] = model_or_path if "model_path" not in kwargs else kwargs["model_path"]
     model_or_path = kwargs["model_path"]
@@ -85,7 +85,7 @@ def download_from_ms(**kwargs):
         "trust_remote_code", False
     ):
         requirements = os.path.join(model_or_path, "requirements.txt")
-        print(f"Detect model requirements, begin to install it: {requirements}")
+        logging.info(f"Detect model requirements, begin to install it: {requirements}")
         from funasr.utils.install_model_requirements import install_requirements
 
         install_requirements(requirements)
@@ -114,7 +114,7 @@ def download_from_hf(**kwargs):
                 check_latest=kwargs.get("check_latest", True),
             )
         except Exception as e:
-            print(f"Download: {model_or_path} failed!: {e}")
+            logging.error(f"Download: {model_or_path} failed!: {e}", exc_info=True)
 
     kwargs["model_path"] = model_or_path if "model_path" not in kwargs else kwargs["model_path"]
 
@@ -157,7 +157,7 @@ def download_from_hf(**kwargs):
         "trust_remote_code", False
     ):
         requirements = os.path.join(model_or_path, "requirements.txt")
-        print(f"Detect model requirements, begin to install it: {requirements}")
+        logging.info(f"Detect model requirements, begin to install it: {requirements}")
         from funasr.utils.install_model_requirements import install_requirements
 
         install_requirements(requirements)
@@ -234,7 +234,7 @@ def get_or_download_model_dir(
                 model_cache_dir, user_agent={Invoke.KEY: key, ThirdParty.KEY: "funasr"}
             )
         except:
-            print("could not check the latest version")
+            logging.warning("could not check the latest version")
     else:
         model_cache_dir = snapshot_download(
             model, revision=model_revision, user_agent={Invoke.KEY: key, ThirdParty.KEY: "funasr"}
